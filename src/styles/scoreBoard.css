@@ -6,7 +6,26 @@
 }
 
 p {
-    color: white;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
     margin: auto;
     margin-bottom: 10px;
+}
+
+.score-up {
+    animation: scale 1s ease-in-out;
+}
+
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
