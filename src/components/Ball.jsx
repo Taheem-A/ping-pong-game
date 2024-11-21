@@ -32,12 +32,12 @@ export default function Ball({ leftPaddlePosition, rightPaddlePosition, setScore
                 }
 
                 if (newX <= 0) {
-                    setScore((prev) => ({ ...prev, player2: prev.player2 + 0.5 })); // Adding 0.5 because there is unexpected behaviour, where it runs this code twice instead of once
+                    setScore((prev) => ({ ...prev, player2: prev.player2 + 1 }));
                     newX = (gameWidth - ballSize) / 2;
                     newY = (gameHeight - ballSize) / 2;
                     updatedDirection.x = -updatedDirection.x;
                 } else if (newX >= gameWidth - ballSize) {
-                    setScore((prev) => ({ ...prev, player1: prev.player1 + 0.5 })); // Adding 0.5 because there is unexpected behaviour, where it runs this code twice instead of once
+                    setScore((prev) => ({ ...prev, player1: prev.player1 + 1 }));
                     newX = (gameWidth - ballSize) / 2;
                     newY = (gameHeight - ballSize) / 2;
                     updatedDirection.x = -updatedDirection.x;
