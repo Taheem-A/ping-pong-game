@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import '../styles/paddle.css';
 
-export default function Paddle({ side }) {
+export default function Paddle({ side, position, setPosition }) {
     const gameHeight = 480;
     const paddleHeight = 80;
 
-    const [position, setPosition] = useState((gameHeight - paddleHeight) / 2);
     const [direction, setDirection] = useState(0);
     const animationFrameRef = useRef(null);
 

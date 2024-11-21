@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import '../styles/scoreBoard.css';
 
 export default function ScoreBoard({ score }) {
