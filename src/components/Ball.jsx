@@ -8,47 +8,42 @@ export default function Ball({ leftPaddlePosition, rightPaddlePosition, setScore
     const paddleWidth = 15;
 
     const [position, setPosition] = useState({ x: (gameWidth - ballSize) / 2, y: (gameHeight - ballSize) / 2 });
-    const [direction, setDirection] = useState({ x: 1, y: 1 });
+    const [velocity, setVelocity] = useState({ x: 2, y: 2 });
     const useAnimationRef = useRef(null);
 
     useEffect(() => {
         const moveBall = () => {
             setPosition((prev) => {
-                let newX = prev.x + direction.x;
-                let newY = prev.y + direction.y;
+                let newX = prev.x + velocity.x;
+                let newY = prev.y + velocity.y;
 
-                let updatedDirection = { ...direction }
+                let updatedVelocity = { ...velocity };
 
                 if (newX <= 10 + paddleWidth && newY >= leftPaddlePosition && newY <= leftPaddlePosition + 80) {
-                    updatedDirection.x = -direction.x;
-                    newX = 10 + paddleWidth;
-                    newY = Math.min(Math.max(newY, leftPaddlePosition), leftPaddlePosition + 80);
+                    const relativeY = (newY - leftPaddlePosition - 40) / 40;
+                    updatedVelocity.x = Math.abs(velocity.x);
+                    updatedVelocity.y = relativeY * 4; 
                 }
 
                 if (newX >= gameWidth - 10 - paddleWidth - ballSize && newY >= rightPaddlePosition && newY <= rightPaddlePosition + 80) {
-                    updatedDirection.x = -direction.x;
-                    newX = gameWidth - 10 - paddleWidth - ballSize;
-                    newY = Math.min(Math.max(newY, rightPaddlePosition), rightPaddlePosition + 80);
+                    const relativeY = (newY - rightPaddlePosition - 40) / 40;
+                    updatedVelocity.x = -Math.abs(velocity.x);
+                    updatedVelocity.y = relativeY * 4;
                 }
 
                 if (newX <= 0) {
                     setScore((prev) => ({ ...prev, player2: prev.player2 + 1 }));
-                    newX = (gameWidth - ballSize) / 2;
-                    newY = (gameHeight - ballSize) / 2;
-                    updatedDirection.x = -updatedDirection.x;
+                    return resetBall(1);
                 } else if (newX >= gameWidth - ballSize) {
                     setScore((prev) => ({ ...prev, player1: prev.player1 + 1 }));
-                    newX = (gameWidth - ballSize) / 2;
-                    newY = (gameHeight - ballSize) / 2;
-                    updatedDirection.x = -updatedDirection.x;
-                }
-                
-                if (newY <= 0 || newY >= gameHeight - ballSize) {
-                    updatedDirection.y = -direction.y;
-                    newY = Math.max(0, Math.min(gameHeight - ballSize, newY));
+                    return resetBall(-1);
                 }
 
-                setDirection(updatedDirection);
+                if (newY <= 0 || newY >= gameHeight - ballSize) {
+                    updatedVelocity.y = -updatedVelocity.y;
+                }
+
+                setVelocity(updatedVelocity);
 
                 return { x: newX, y: newY };
             });
@@ -56,10 +51,15 @@ export default function Ball({ leftPaddlePosition, rightPaddlePosition, setScore
             useAnimationRef.current = requestAnimationFrame(moveBall);
         };
 
+        const resetBall = (xVelocity) => {
+            setVelocity({ x: xVelocity * 2, y: 2 });
+            return { x: (gameWidth - ballSize) / 2, y: (gameHeight - ballSize) / 2 };
+        };
+
         useAnimationRef.current = requestAnimationFrame(moveBall);
 
         return () => cancelAnimationFrame(useAnimationRef.current);
-    }, [direction, leftPaddlePosition, rightPaddlePosition]);
+    }, [velocity, leftPaddlePosition, rightPaddlePosition]);
 
     return <div className="ball" style={{ top: position.y, left: position.x }}></div>;
 }

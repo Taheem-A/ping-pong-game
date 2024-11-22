@@ -33,7 +33,7 @@ export default function Paddle({ side, position, setPosition }) {
     }, [side]);
 
     useEffect(() => {
-        const paddleSpeed = 2;
+        const paddleSpeed = 3;
 
         const movePaddle = () => {
             setPosition((prev) => {
