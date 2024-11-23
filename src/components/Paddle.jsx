@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import '../styles/paddle.css';
 
-export default function Paddle({ side, position, setPosition }) {
+export default function Paddle({ side, position, setPosition, ballPosition }) {
     const gameHeight = 480;
     const paddleHeight = 80;
 
@@ -9,27 +9,24 @@ export default function Paddle({ side, position, setPosition }) {
     const animationFrameRef = useRef(null);
 
     useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (side === 'left') {
-                if (event.key === 'w') setDirection(-1);
-                if (event.key === 's') setDirection(1);
-            } else if (side === 'right') {
-                if (event.key === 'ArrowUp') setDirection(-1);
-                if (event.key === 'ArrowDown') setDirection(1);
+        if (side === "left") {
+            const handleKeyDown = (event) => {
+                if (event.key === 'w' || event.key === 'ArrowUp') setDirection(-1);
+                if (event.key === 's' || event.key === 'ArrowDown') setDirection(1);
             };
-        };
 
-        const handleKeyUp = (event) => {
-            if (event.key === 'ArrowUp' || event.key === 'ArrowDown'|| event.key === 'w' || event.key === 's') setDirection(0);
-        };
+            const handleKeyUp = (event) => {
+                if (event.key === 'w' || event.key === 's' || event.key === 'ArrowUp' || event.key === 'ArrowDown') setDirection(0); // Stop moving
+            };
 
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
+            window.addEventListener("keydown", handleKeyDown);
+            window.addEventListener("keyup", handleKeyUp);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
-        };
+            return () => {
+                window.removeEventListener("keydown", handleKeyDown);
+                window.removeEventListener("keyup", handleKeyUp);
+            };
+        }
     }, [side]);
 
     useEffect(() => {
@@ -48,17 +45,32 @@ export default function Paddle({ side, position, setPosition }) {
             animationFrameRef.current = requestAnimationFrame(movePaddle);
         };
 
-        if (direction !== 0 && !animationFrameRef.current) {
+        if (side === "left" && direction !== 0) {
             animationFrameRef.current = requestAnimationFrame(movePaddle);
-        };
+        }
 
-        if (direction === 0 && animationFrameRef.current) {
-            cancelAnimationFrame(animationFrameRef.current);
-            animationFrameRef.current = null;
-        };
-        
+        if (side === "right" && ballPosition) {
+            const paddleCenter = position + paddleHeight / 2;
+            const ballY = ballPosition.y;
+
+            if (ballY < paddleCenter - 10) setDirection(-1);
+            else if (ballY > paddleCenter + 10) setDirection(1);
+            else setDirection(0);
+
+            animationFrameRef.current = requestAnimationFrame(() => {
+                setPosition((prev) => {
+                    let newPosition = prev + direction * 2;
+
+                    if (newPosition < 0) newPosition = 0;
+                    if (newPosition > gameHeight - paddleHeight) newPosition = gameHeight - paddleHeight;
+
+                    return newPosition;
+                });
+            });
+        }
+
         return () => cancelAnimationFrame(animationFrameRef.current);
-    }, [direction]);
+    }, [direction, side, ballPosition, position]);
 
     return <div className={`paddle ${side}`} style={{ top: position }}></div>;
 }
