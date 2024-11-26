@@ -26,8 +26,8 @@ export default function ScoreBoard({ score }) {
 
     return (
         <div className="scoreBoard">
-            <p className={animationClass.player1}>Player 1: {score.player1}</p>
-            <p className={animationClass.player2}>Player 2: {score.player2}</p>
+            <p className={animationClass.player1}>Player: {score.player1}</p>
+            <p className={animationClass.player2}>Computer: {score.player2}</p>
         </div>
     );
 }
