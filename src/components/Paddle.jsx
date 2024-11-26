@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import '../styles/paddle.css';
 
-export default function Paddle({ side, position, setPosition, ballPosition, targetPosition }) {
+export default function Paddle({ side, position, setPosition, ballPosition, targetPosition, numberOfCollisions }) {
 	const gameHeight = 480;
 	const paddleHeight = 80;
 
@@ -45,24 +45,16 @@ export default function Paddle({ side, position, setPosition, ballPosition, targ
 			animationFrameRef.current = requestAnimationFrame(movePaddle);
 		};
 
-		if (side === "left" && direction !== 0) {
-			animationFrameRef.current = requestAnimationFrame(movePaddle);
-		}
+		if (side === "left" && direction !== 0) animationFrameRef.current = requestAnimationFrame(movePaddle);
 
 		if (side === "right") {
 			const paddleCenter = position + paddleHeight / 2;
-			const paddleCenterOffset = 25;
+			const paddleCenterOffsetDifficulty = Math.floor(-100 / (numberOfCollisions + 20 / 3) + 15);
+			const paddleCenterOffset = 25 + paddleCenterOffsetDifficulty;
 		
-			if (targetPosition < (paddleCenter - paddleCenterOffset)) {
-				setDirection(-1);
-			} else if (targetPosition > (paddleCenter + paddleCenterOffset)) {
-				setDirection(1);
-			} else {
-				setDirection(0);
-			}
-
-			
-			console.log(`AI Paddle Target: ${targetPosition}, Center: ${paddleCenter}, Direction: ${direction}`);
+			if (targetPosition < (paddleCenter - paddleCenterOffset)) setDirection(-1);
+			else if (targetPosition > (paddleCenter + paddleCenterOffset)) setDirection(1);
+			else setDirection(0);
 		
 			animationFrameRef.current = requestAnimationFrame(() => {
 				setPosition((prev) => {

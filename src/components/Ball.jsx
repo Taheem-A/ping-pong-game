@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import '../styles/ball.css';
 
-export default function Ball({ leftPaddlePosition, rightPaddlePosition, setScore, ballPosition, setBallPosition, ballVelocity,setBallVelocity, setPlayerHitBall }) {
+export default function Ball({ leftPaddlePosition, rightPaddlePosition, setScore, ballPosition, setBallPosition, ballVelocity, setBallVelocity, setPlayerHitBall, setNumberOfCollisions }) {
 	const gameWidth = 640;
 	const gameHeight = 480;
 	const ballSize = 10;
@@ -21,15 +21,17 @@ export default function Ball({ leftPaddlePosition, rightPaddlePosition, setScore
 				if (newX <= 10 + paddleWidth && newY >= leftPaddlePosition && newY <= leftPaddlePosition + paddleHeight) {
 					const relativeY = (newY - leftPaddlePosition - (paddleHeight / 2)) / (paddleHeight / 2);
 					setPlayerHitBall(1);
-					updatedVelocity.x = Math.abs(ballVelocity.x);
-					updatedVelocity.y = relativeY * 4;
+					setNumberOfCollisions(prev => prev + 1);
+					updatedVelocity.x = Math.abs(ballVelocity.x) + 0.1;
+					updatedVelocity.y = relativeY * 4 + 0.1;
 				}
 
 				if (newX >= gameWidth - 10 - paddleWidth - ballSize && newY >= rightPaddlePosition && newY <= rightPaddlePosition + paddleHeight) {
 					const relativeY = (newY - rightPaddlePosition - (paddleHeight / 2)) / (paddleHeight / 2);
 					setPlayerHitBall(0);
-					updatedVelocity.x = -Math.abs(ballVelocity.x);
-					updatedVelocity.y = relativeY * 4;
+					setNumberOfCollisions(prev => prev + 1);
+					updatedVelocity.x = -Math.abs(ballVelocity.x) - 0.1;
+					updatedVelocity.y = relativeY * 4 + 0.1;
 				}
 
 				if (newX <= 0) {
