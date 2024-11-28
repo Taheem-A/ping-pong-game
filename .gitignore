@@ -10,6 +10,11 @@
 
 # production
 /build
+/.codesandbox
+
+# formatters
+.prettierrc
+.prettierignore
 
 # misc
 .DS_Store

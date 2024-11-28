@@ -1,14 +1,14 @@
 .paddle {
-    position: absolute;
-    width: 15px;
-    height: 80px;
-    background-color: #fff;
+	position: absolute;
+	width: 15px;
+	height: 80px;
+	background-color: #fff;
 }
 
 .left {
-    left: 10px;
+	left: 10px;
 }
 
 .right {
-    right: 10px;
+	right: 10px;
 }

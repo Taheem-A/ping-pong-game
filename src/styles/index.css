@@ -1,27 +1,27 @@
-@import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 * {
-    font-family: Audiowide;
+	font-family: Audiowide;
 }
 
 body {
-    background-color: black;
-    color: white;
+	background-color: black;
+	color: white;
 }
 
 .gameContainer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 800px;
-    height: 600px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 800px;
+	height: 600px;
 }
 
 .gameArea {
-    position: relative;
-    width: 80%;
-    height: 80%;
-    margin: auto;
-    border: 3px solid white;
+	position: relative;
+	width: 80%;
+	height: 80%;
+	margin: auto;
+	border: 3px solid white;
 }
