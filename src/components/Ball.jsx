@@ -7,6 +7,8 @@ export default function Ball({
 	setScore,
 	ballPosition,
 	setBallPosition,
+	trail,
+	setTrail,
 	ballVelocity,
 	setBallVelocity,
 	setPlayerHitBall,
@@ -76,6 +78,12 @@ export default function Ball({
 
 				setBallVelocity(updatedVelocity);
 
+				setTrail((prevTrail) => {
+					const newTrail = [...prevTrail, { x: newX, y: newY }];
+					if (newTrail.length > 10) newTrail.shift();
+					return newTrail;
+				});
+
 				return { x: newX, y: newY };
 			});
 
@@ -97,9 +105,24 @@ export default function Ball({
 	}, [ballVelocity, leftPaddlePosition, rightPaddlePosition]);
 
 	return (
-		<div
-			className="ball"
-			style={{ top: ballPosition.y, left: ballPosition.x }}
-		></div>
+		<>
+			{trail.map((pos, index) => (
+				<div
+					key={index}
+					className="trail"
+					style={{
+						top: pos.y,
+						left: pos.x,
+						backgroundColor: `rgba(255, 255, 255, ${
+							(10 - index) / 100
+						})`,
+					}}
+				/>
+			))}
+			<div
+				className="ball"
+				style={{ top: ballPosition.y, left: ballPosition.x }}
+			/>
+		</>
 	);
 }

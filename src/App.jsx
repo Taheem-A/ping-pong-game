@@ -15,6 +15,7 @@ export default function App() {
 		x: (gameWidth - ballSize) / 2,
 		y: (gameHeight - ballSize) / 2,
 	});
+	const [trail, setTrail] = useState([]);
 	const [ballVelocity, setBallVelocity] = useState({ x: 2, y: 2 });
 	const [playerHitBall, setPlayerHitBall] = useState(0);
 	const [numberOfCollisions, setNumberOfCollisions] = useState(0);
@@ -82,6 +83,8 @@ export default function App() {
 							setScore={setScore}
 							ballPosition={ballPosition}
 							setBallPosition={setBallPosition}
+							trail={trail}
+							setTrail={setTrail}
 							ballVelocity={ballVelocity}
 							setBallVelocity={setBallVelocity}
 							setPlayerHitBall={setPlayerHitBall}

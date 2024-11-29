@@ -5,3 +5,9 @@
 	background-color: white;
 	border-color: white;
 }
+
+.trail {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+}
